@@ -10,7 +10,7 @@ function Pictures(pic) {
   //Pictures.allkeys.push(this.keyword);
 
 }
-//let allkeys=[];
+//let allkeys=[]
 
 Pictures.prototype.render = function () {
   let newOption = $('<option></option>').text(this.keyword);
