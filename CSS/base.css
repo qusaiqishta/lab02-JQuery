@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&family=Syne+Mono&display=swap');
+
+*{
+    box-sizing: border-box;
+    background-color:beige;
+}
+
+
+body{
+    font-family: 'Roboto', sans-serif;
+
+    font-weight: 700;
+    font-size: 30px;
+    text-align: center;
+}
