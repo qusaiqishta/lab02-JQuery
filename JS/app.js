@@ -1,46 +1,142 @@
   
 'use strict';
 
-function Pictures(pic) {
-  this.image = pic.image_url;
-  this.title = pic.title;
-  this.description = pic.description;
-  this.keyword = pic.keyword;
-  this.horns = pic.horns;
-  //Pictures.allkeys.push(this.keyword);
+let picArray=[];
+let keysArray=[]; 
+let htmlTemplate=$('#photo-template').html();
 
+function Pictures(horns) {
+  for (const key in horns) {
+    this[key] = horns[key];
+  }
+  picArray.push(this);
 }
-//let allkeys=[];
 
-Pictures.prototype.render = function () {
-  let newOption = $('<option></option>').text(this.keyword);
+Pictures.prototype.renderKeywords=function(){
+if (!(keysArray.includes(this.keyword))){
+  let newOption=$('<Option></Option>').text(this.keyword);
+  newOption.attr('class','newOptions');
   $('select').append(newOption);
-  let picturesClone = $('#photo-template').clone();
-  picturesClone.find('h2').text(this.title);
-  picturesClone.find('img').attr('src', this.image);
-  picturesClone.find('p').text(this.description);
-  picturesClone.attr('class', this.keyword);
-  picturesClone.attr('id', this.keyword);
-  $('main').append(picturesClone);
-};
+  keysArray.push(this.keyword);
+  console.log(keysArray);
+}
+}
 
-const ajaxSettings = {
-  method: 'get',
-  dataType: 'json'
-};
+Pictures.prototype.renderingImages=function(){
+  this.renderKeywords();
+  let container=$('<section></section>');
+  container.html(htmlTemplate);
+  let template=$(container).html(); 
+  container.attr('class',this.keyword);
+   let mustacheRender=Mustache.render(template,this);
+   container.html(mustacheRender); 
+   $('main').append(container);
+}
 
-$.ajax('data/page-1.json', ajaxSettings).then((data) => {
-  data.forEach(Element => {
-    let imgs = new Pictures(Element);
-    imgs.render();
+const ajaxSetting={
+  method:'get',
+  dataType:'json'
+}
+let jsonfile='data/page-1.json';
+
+$.ajax(jsonfile,ajaxSetting).then(data=>{
+  data.forEach(element => {
+    let imgs= new Pictures(element);
+    imgs.renderingImages();
+    
   });
-});
+})
 
-$(document).ready(function(){
-  $('select').on('change', function(){
+$(document).ready(function () {
+  $('select').on('change', function () {
     let selected = this.value;
-    console.log(this.value);
     $('section').hide();
     $(`.${selected}`).show();
   });
 });
+
+$(document).ready(function(){
+  $('#page1').on('click',function(){
+    jsonfile='data/page-1.json';
+    picArray=[];
+    $('section').remove();
+    $('.newOptions').remove();
+    gettingDataByAjax(jsonfile);
+    renderKeywords();
+  })
+})
+$(document).ready(function(){
+  $('#page2').on('click',function(){
+    jsonfile='data/page-2.json';
+    picArray=[];
+    $('section').remove();
+    $('.newOptions').remove();
+    gettingDataByAjax(jsonfile);
+    renderKeywords();
+  })
+
+})
+
+function gettingDataByAjax(jsonFile){
+  $.ajax(jsonFile,ajaxSetting).then(data=>{
+    data.forEach(element=>{
+      let newInstance=new Pictures(element);
+      newInstance.renderingImages()
+    })
+  })
+}
+
+$(document).ready(function () {
+  $('#byTitle').on('click', function () {
+    picArray.sort(titleComparison);
+    $('section').remove();
+    picArray.forEach( newInstance => {
+      newInstance.renderingImages();
+      console.log('ss00');
+    });
+  });
+});
+
+
+$(document).ready(function () {
+  $('#byHorns').on('click', function () {
+    picArray.sort(hornsComparison);
+    $('section').remove();
+    picArray.forEach(newInstance => {
+      newInstance.renderingImages();
+      console.log('qqq');
+    });
+  });
+});
+
+
+
+function titleComparison(a,b){
+  let titleOne=a.title.toUpperCase();
+  let titleTwo=b.title.toUpperCase();
+  if(titleOne>titleTwo){
+    return 1;
+  }
+  else if(titleTwo>titleOne){
+    return -1;
+  }
+  return 0;
+}
+
+function hornsComparison(a,b){
+  let hornOne=a.horns;
+  let hornTwo=b.horns;
+
+  if(hornOne>hornTwo){
+    return 1;
+  }
+  else if(hornTwo>hornOne){
+    return -1;
+  }
+  return 0;
+}
+
+
+
+console.log($('#sortDiv'))
+
