@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="CSS/reset.css">
     <link rel="stylesheet" href="CSS/base.css">
     <link rel="stylesheet" href="CSS/layout.css">
-    <link rel="stylesheet" href="CSS/modules.css">
+    <link rel="stylesheet" href="CSS/modules.css">C
+    <link rel="stylesheet" href="CSS/flex.css">
   </head>
 
   <body>
@@ -16,18 +17,32 @@
       <select>
         <option value="default">Filter by Keyword</option>
       </select>
+      <div id="sortDiv">
+        <input type="radio" id="byTitle" name="byTitle" value="byTitle">
+        <label for="byTitle">sort by title</label>
+        <input type="radio" id="byHorns" name="byHorns" value="byHorns">
+        <label for="byHorns"> sort by horns</label>
+
+      </div>
+      <div id="sectionDiv">
+        <ul>
+          <li id="page1">Page1</li>
+          <li id="page2">page2</li>
+        </ul>
+      </div>
     </header>
     <main>
       <section id="photo-template">
-        <h2></h2>
-        <img src="" alt="">
-        <p></p>
+        <h2>{{title}}</h2>
+        <img src="{{image_url}}" alt="">
+        <p>{{description}}</p>
       </section>
     </main>
     <footer>
       &copy; 2018 Code Fellows
     </footer>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/mustache@latest"></script>
     <script src="JS/app.js"></script>
   </body>
   
