@@ -12,6 +12,7 @@ function Pictures(horns) {
   picArray.push(this);
 }
 
+
 Pictures.prototype.renderKeywords=function(){
 if (!(keysArray.includes(this.keyword))){
   let newOption=$('<Option></Option>').text(this.keyword);
